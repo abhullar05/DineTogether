@@ -1,0 +1,98 @@
+import jdk.jshell.tool.JavaShellToolBuilder;
+
+import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
+
+public class GroupChatClient {
+    private static JFrame frame;
+    private static PrintWriter pw;
+    private static JPanel panel;
+    private static ObjectOutputStream oos;
+    private static ObjectInputStream objectInputStream;
+    public static void showGroupChat(JFrame frame1, BufferedReader bfr, ObjectOutputStream objectOutputStream, PrintWriter printWriter, JPanel panel2, LoginClient loginClient, ObjectInputStream ois) throws IOException {
+        panel = new JPanel();
+        pw = printWriter;
+        oos = objectOutputStream;
+        System.out.println("entered show group chat method");
+        String username = bfr.readLine();
+        frame = frame1;
+        JLabel typeLabel = new JLabel("Type Here :");
+        JTextField typeHere = new JTextField(20);
+        JTextArea messageBox = new JTextArea(5, 10);
+        JButton sendButton = new JButton("Send");
+        sendButton.setActionCommand("send");
+        JScrollPane scrollPane = new JScrollPane(messageBox);
+        scrollPane.setBounds(15, 20, 300, 220);
+        JButton logoutButton = new JButton("logout");
+
+
+
+
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int numberOfMessages = 0;
+                try {
+                    System.out.println("before number of messages");
+                    numberOfMessages = Integer.parseInt(bfr.readLine());
+                    oos.writeObject(sendButton);
+                    oos.flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                String textEntered = typeHere.getText();
+                pw.println(textEntered);
+                pw.flush();
+
+
+                try {
+                    String receivedMessages = null;
+                    for (int i = 0; i < numberOfMessages; i++){
+                        System.out.println("entered while loop");
+
+
+                        receivedMessages = bfr.readLine();
+                        System.out.println(receivedMessages);
+                        messageBox.append(username + " : " + receivedMessages + "\n" );
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+
+            }
+        });
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    oos.writeObject(logoutButton);
+                    oos.flush();
+                    loginClient.loginOrCreateAccountClient(loginClient);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        });
+        panel.add(typeLabel);
+        panel.add(typeHere);
+        panel.add(scrollPane);
+        panel.add(sendButton);
+        panel.add(logoutButton);
+        frame.getContentPane().removeAll();
+        frame.repaint();
+        frame.add(panel);
+        frame.setVisible(true);
+
+        System.out.println("end");
+
+
+    }
+
+}
