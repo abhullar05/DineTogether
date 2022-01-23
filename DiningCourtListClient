@@ -1,0 +1,102 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+
+public class DiningCourtListClient {
+
+    private static JFrame frame = new JFrame();
+    private static JPanel chooseHallScreen ;
+    private static JPanel startScreen;
+    private static ObjectOutputStream oos;
+    private static BufferedReader bfr;
+    private static PrintWriter pw;
+    private static ObjectInputStream ois;
+
+    public static void displayDiningCourtGui(JFrame frame1, ObjectOutputStream objectOutputStream, BufferedReader bufferedReader, PrintWriter printWriter, JPanel panel2, LoginClient loginClient, ObjectInputStream objectInputStream){
+        startScreen = new JPanel();
+        oos = objectOutputStream;
+        ois = objectInputStream;
+        frame = frame1;
+        bfr = bufferedReader;
+        pw = printWriter;
+
+        chooseDiningHallScreen(panel2, loginClient); // calls the welcome screen
+        frame.add(chooseHallScreen); // adds the start screen panel to jframe
+        frame.setVisible(true);
+    }
+
+       /* private static void welcomeScreen() {
+            startScreen.setLayout(new GridBagLayout()); // sets layout to gridbag
+            GridBagConstraints gbc = new GridBagConstraints(); // makes new variable for gbc constraints
+            gbc.insets = new Insets(10, 5, 10, 5); //
+
+            JLabel titleLabel = new JLabel("DINING HALL CHAT APP", SwingConstants.CENTER); // creates new label in center
+            titleLabel.setFont(new Font("Serif", Font.PLAIN, 25));
+
+            JButton loginButton = new JButton("LOGIN");
+            loginButton.setFont(new Font("Serif", Font.BOLD, 12));
+            loginButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // when login button pressed, take to login page
+                    chooseDiningHallScreen(); // PLACEHOLDER - change this to be login screen
+                }
+            });
+            JButton makeAcctButton = new JButton("MAKE ACCOUNT");
+            makeAcctButton.setFont(new Font("Serif", Font.BOLD, 12));
+            makeAcctButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // when make acct button pressed, take to make account page
+                }
+            });
+            gbc.gridx = 4;
+            gbc.gridy = 0;
+            startScreen.add(titleLabel, gbc);
+            gbc.gridy = 1;
+            startScreen.add(loginButton, gbc);
+            gbc.gridy = 2;
+            startScreen.add(makeAcctButton, gbc);
+        } */
+
+
+    private static void chooseDiningHallScreen(JPanel panel2, LoginClient loginClient) {
+        chooseHallScreen = new JPanel();
+
+        frame.getContentPane().removeAll(); // clears the frame of previous panel
+        frame.repaint(); // repaints new panel
+
+
+
+
+        JLabel windsorLabel = new JLabel("Windsor Dining Court");
+        JButton windsorButton = new JButton("JOIN");
+        windsorButton.setActionCommand("windsor");
+        windsorButton.setFont(new Font("Serif", Font.BOLD, 12));
+        windsorButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    oos.writeObject(windsorButton);
+                    System.out.println("going to call group chat method");
+                    GroupChatClient.showGroupChat(frame, bfr, oos, pw, panel2, loginClient, ois);
+                    System.out.println("called group chat method");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        chooseHallScreen.add(windsorLabel);
+        chooseHallScreen.add(windsorButton);
+
+
+        // add panel to frame, set frame to visible
+        frame.add(chooseHallScreen);
+        frame.setVisible(true);
+
+    }
+
+
+}
