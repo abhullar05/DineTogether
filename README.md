@@ -1,4 +1,3 @@
-![AUC](https://user-images.githubusercontent.com/89639405/156903667-4bfd0007-c0e0-4da6-949c-c879f89c9d39.png)
 # DineTogether
 College students especially freshmen want to interact and connect with more people. DineTogether can enable them to dine with other interested students with help of a chat platform.
 
