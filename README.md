@@ -1,4 +1,3 @@
-[DineTogether.pptx](https://github.com/abhullar05/DineTogether/files/8191699/DineTogether.pptx)
 # DineTogether
 College students especially freshmen want to interact and connect with more people. DineTogether can enable them to dine with other interested students with help of a chat platform.
 
@@ -9,6 +8,8 @@ What it does : A chat messaging which lets students create account and tell othe
 How was it built : The project was based on Client-server architecture which features a heavy server and light client with processing and storing files on server side. A new thread was spawned for each client so that they were independent of each other.
 
 Challenges faced : It was challenging to send all the messages received from the client to other clients so that they can display it on their GUIs.
+
+DineTogether pitch : [DineTogether.pptx](https://github.com/abhullar05/DineTogether/files/8191699/DineTogether.pptx)
 
 Youtube link : https://youtu.be/zVH81LIRF-Y
 
